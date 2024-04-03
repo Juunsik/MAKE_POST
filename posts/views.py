@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.urls import reverse
-from .models import Post
-from .forms import PostForm
+from django.contrib import messages
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 
@@ -57,3 +58,22 @@ def page_delete(request, post_id):
         return redirect("post-list")
     else:
         return render(request, "posts/post_confirm_delete.html", {"post": post})
+
+
+# 댓글 생성
+def comment_create(request, post_id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        post = Post.objects.get(id=post_id)
+        if not post:
+            return redirect("post-list")
+        print(form)
+        if form.is_valid():
+            comment = form.save()
+            comment.post = post
+            comment.save()
+            messages.success(request, "Post reviewed")
+            return redirect("post-detail", post_id=post.id)
+    else:
+        form=CommentForm()
+    return render(request, "posts/comment_form.html", {"form": form})

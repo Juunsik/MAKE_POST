@@ -1,0 +1,300 @@
+<!-- [A]- 정적 파일 로드 -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mind Note</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      /* 간단한 리셋 CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 기본 바디 스타일 */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+}
+
+/* 페이지 컨테이너 */
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1920px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 수평 가운데 정렬 */
+}
+.navbar {
+  margin: 0 auto;
+  display:flex;
+  width:100%;
+  height:50px;
+  justify-content: space-between;
+}
+.sort-bar {
+  margin: 0 auto;
+  display:flex;
+  width:100%;
+  height:50px;
+}
+.greed {
+  margin-top: 50px;
+  width: 100%;
+  max-width: 1920px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center;
+}
+
+/* 그리드 시스템 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.column {
+  margin : 16px;
+  flex: 0 0 320px;
+  min-width: 319px; /* 최소 너비를 설정하여 카드가 너무 작아지지 않게 합니다 */
+}
+
+/* 포스트 카드 */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  width: 320px;
+  height: 377px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.card-image {
+  width: 320px;
+  height: 167px;
+}
+
+.card-body {
+  padding: 20px;
+  width: 320px;
+  height: 165px;
+}
+/* 이미지 스타일 */
+.post-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* 텍스트 스타일 */
+.post-title {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+}
+
+.post-meta {
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* 반응형 미디어 쿼리 */
+@media (min-width: 1920px) {
+  .container {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1920px;
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1920px;
+      display: flex; 
+  }
+  .sort-bar {
+    margin: 0 auto;
+    width: 100%;
+    display: flex; 
+    max-width: 1920px;
+  }
+}
+
+@media (min-width: 1408px) and (max-width: 1919px) {
+  .container {
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1408px; /* 최대 너비를 설정합니다. */
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1408px;
+      display: flex; 
+  }
+  .sort-bar {
+    margin: 0 auto;
+    width: 100%;
+    display: flex; 
+    max-width: 1408px;
+  }
+}
+
+@media (min-width: 1056px) and (max-width: 1407px) {
+  .container {
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1056px; /* 최대 너비를 설정합니다. */
+      display: flex;
+      justify-content: center;
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1056px;
+      display: flex; 
+  }
+  .sort-bar {
+    margin: 0 auto;
+    width: 100%;
+    display: flex; 
+    max-width: 1056px;
+}
+}
+
+@media (min-width: 748px) and (max-width: 1056px) {
+  .navbar {
+  margin: 0 auto;
+      width: 100%;
+      display: flex; 
+  }
+  .sort-bar {
+    margin: 0 auto;
+    width: 100%;
+    display: flex; 
+  }
+  .column {
+      flex: 0 0 calc(50% - 32px); /* (100% / 2) - padding*2 */
+  }
+  .card {
+      width: 100%;
+  }
+}
+
+@media (max-width: 747px) {
+  .navbar {
+      margin: 0 auto;
+          width: 100%;
+          display: flex; 
+      }
+  .sort-bar {
+    margin: 0 auto;
+    width: 100%;
+    display: flex; 
+  }
+  .column {
+      flex: 0 0 100%; /* 카드가 전체 너비를 차지하도록 설정 */
+  }
+  .card {
+      width: 100%;
+  }
+}
+    </style>
+  </head>
+<body>
+  <div class="navbar">
+    <a href="{% url 'posts:list' %}">
+      <button style="width: 150px; height: 80%; margin-left: 20px">home</button>
+  </a>
+    <button style="width: 150px; height: 80%; margin-right: 20px">login</button>
+  </div>
+  <div class="sort-bar">
+    <button style="width: 150px; height: 80%; margin-left: 20px">추천순</button>
+    <button style="width: 150px; height: 80%; margin-left: 20px">최신순</button>
+  </div>
+<!-- 그리드 row 시작 -->
+{% if page %}
+<div class="container">
+  <div class="row">
+{% for post in page %}
+    <!-- 링크를 카드 안으로 옮김 -->
+    <div class="column">
+      <div class="card">
+        <a href="{% url 'posts:detail' post.id %}">
+          <div class="card-image">
+            <!-- 실제 이미지 경로로 src 속성을 변경해야 합니다 -->
+            <img src="{{ post.image_url }}" class="card-img-top" alt="{{ post.title }}">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.summary }}</p>
+            <p class="post-date">{{ post.created_at|date:'d' }} {{ post.created_at|date:'M' }}</p>
+            <p class="count-comment">{{ post.comment_count }} comments</p>
+          </div>
+          <div class="card-user">
+            <img src="{{ post.user.profile_image_url }}" class="" alt="{{ post.user.username }}">
+            <p class="username">{{ post.user.username }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+    <!-- 추가 카드를 이어서 더 넣을 수 있습니다... -->
+    <div>
+      <a href="{% url 'posts:create' %}">게시물 작성</a>
+    </div>
+
+
+    <div class="paging">
+      {% if page.has_previous %}
+        <a href="?page=1" class="first">처음</a>
+        <a href="?page={{page.previous_page_number}}" class="prev">이전</a>
+      {% endif %}
+
+      <span class="page">
+        <p>{{page.number}}
+          of
+          {{page.paginator.num_pages}}</p>
+      </span>
+
+      {% if page.has_next %}
+        <a href="?page={{page.next_page_number}}" class="next">다음</a>
+        <a href="?page={{page.paginator.num_pages}}" class="last">마지막</a>
+
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% else %}
+<div class="wrap-default">
+  <div class="default">
+    <div class="default-box">
+      <p>"TIL 작성하세요~!!"</p>
+      <a href="{% url 'posts:create' %}">게시물 작성</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+</body>
+</html>
+
+
+

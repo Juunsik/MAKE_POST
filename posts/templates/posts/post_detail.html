@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .navbar {
+            margin: 0 auto;
+            display:flex;
+            width:100%;
+            height:50px;
+            justify-content: space-between;
+        }
+        .post-container {
+            box-sizing: border-box;
+            margin:auto;
+            width:768px;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .post-title-div {
+            color: white;
+            padding: 20px;
+        }
+        .post-title {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+        .post-author {
+            font-style: italic;
+            color: #555;
+            margin-top: 10px;
+        }
+        .written {
+            background: #eee;
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .comment-section {
+            width: calc(100% - 20px);
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .comment-section h3 {
+            color: #333;
+        }
+        .comment {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .comment:last-child {
+            border-bottom: none;
+        }
+        .comment-author {
+            font-weight: bold;
+        }
+        .comment-text {
+            margin-top: 5px;
+        }
+        .comment-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .submit-button {
+            padding: 10px;
+            background-color: #686464;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin:auto;
+            margin-top: 10px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .submit-button:hover {
+            background-color: #4cae4c;
+        }
+            @media (min-width: 1920px) {
+
+            .navbar {
+                margin: 0 auto;
+                width: 100%;
+                max-width: 1920px;
+                display: flex; 
+            }
+
+        }
+
+        @media (min-width: 1408px) and (max-width: 1919px) {
+
+        .navbar {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1408px;
+            display: flex; 
+        }
+
+    }
+
+    @media (min-width: 1056px) and (max-width: 1407px) {
+    .navbar {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 1056px;
+        display: flex; 
+    }
+    }
+
+    @media (min-width: 748px) and (max-width: 1056px) {
+    .navbar {
+    margin: 0 auto;
+        width: 100%;
+        display: flex; 
+    }
+    }
+
+    @media (max-width: 747px) {
+    .navbar {
+        margin: 0 auto;
+            width: 100%;
+            display: flex; 
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'posts:list' %}">
+            <button style="width: 150px; height: 80%; margin-left: 20px">home</button>
+        </a>
+        <button style="width: 150px; height: 80%; margin-right: 20px">login</button>
+    </div>
+<div class="post-container">
+    <div class="post-title-div">
+    <h1 class="post-title">
+        {{post.title}}
+            {% for error in form.title.errors %}
+            <span>{{error}}</span>
+            {% endfor %}
+    </h1>
+    </div>
+    <p class="post-content">
+        {{post.content}}
+        {% for error in form.content.errors %}
+        <span>{{error}}</span>
+        {% endfor %}
+        <img src="path-to-your-image.jpg" alt="Descriptive text about the image">
+    </p>
+    <div class="written">
+        <p class="post-author">글 작성자 넣는 칸입니다</p>
+    </div>
+
+
+
+
+<div class="comment-section">
+    <h3>댓글</h3>
+    <textarea class="comment-input" placeholder="댓글을 입력하세요...">
+    </textarea>
+    <button class="submit-button">댓글작성</button>
+
+    <div class="comment">
+        <p class="comment-author">댓글작성자1</p>
+        <p class="comment-text">댓글 내용입니다.</p>
+    </div>
+    <div class="comment">
+        <p class="comment-author">댓글작성자1</p>
+        <p class="comment-text">댓글 내용입니다.</p>
+    </div>
+    <!-- Additional comments will go here -->
+  <button>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+  </button>
+  <button>
+    <a href="{% url 'posts:update' post.id %}">수정하기</a>
+  </button>
+</div>
+</div>
+
+</body>
+</html>

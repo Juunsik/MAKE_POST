@@ -18,12 +18,10 @@ def post_list(request):
     page = paginator.page(current_page)
     return render(request, "posts/post_list.html", {"page": page})
 
-
 # 상세 페이지
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     return render(request, "posts/post_detail.html", {"post": post})
-
 
 # 게시물 생성
 def post_create(request):

@@ -9,9 +9,6 @@ class Post(CommonModel):
     read_count = models.PositiveIntegerField(default=0, blank=True, null=True)
 
     def __str__(self):
-<<<<<<< HEAD
-        return self.title
-=======
         return self.title
 
 class Comment(CommonModel):
@@ -21,4 +18,3 @@ class Comment(CommonModel):
     def __str__(self):
         return f'{self.content}-{self.post}'
     
->>>>>>> comment

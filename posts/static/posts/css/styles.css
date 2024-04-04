@@ -176,9 +176,8 @@ body {
 
 
 
-
+/* 
 <!-- 
-
 <a href="{% url 'posts:comment-create' post.id %}">댓글쓰기</a>
 <a href="{% url 'posts:update' post.id %}">수정하기</a>
-<a href="{% url 'posts:delete' post.id %}">삭제하기</a> -->
+<a href="{% url 'posts:delete' post.id %}">삭제하기</a> --> */

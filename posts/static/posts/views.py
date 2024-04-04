@@ -11,12 +11,11 @@ from .forms import PostForm, CommentForm
 # 목록 가져오기
 def post_list(request):
     post_list = Post.objects.all()
-    paginator = Paginator(post_list.order_by('-created_at'), 10)
+    paginator = Paginator(post_list, 8)
     current_page = request.GET.get("page")
     if current_page is None:
         current_page = 1
     page = paginator.page(current_page)
-    print(page)
     return render(request, "posts/post_list.html", {"page": page})
 
 # 상세 페이지

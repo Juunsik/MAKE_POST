@@ -1,8 +1,4 @@
 from django.contrib import admin
-<<<<<<< HEAD
-
-# Register your models here.
-=======
 from .models import Post, Comment
 
 
@@ -22,4 +18,3 @@ class CommentAdmin(admin.ModelAdmin):
         "id",
         "content",
     ]
->>>>>>> comment

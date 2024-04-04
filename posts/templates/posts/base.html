@@ -1,0 +1,40 @@
+<!-- [A]- 정적 파일 로드 -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mind Note</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumBarunpen.woff"
+    />
+  </head>
+
+  <body>
+    <div class="menu">
+      <h1>
+        <a href="{% url 'post-list' %}"
+          ><img src="{% static 'posts/image/logo02.svg' %}"
+        /></a>
+      </h1>
+      <ul>
+        <li>
+          <a href="{% url 'post-list' %}">모아보기</a>
+        </li>
+        <li>
+          <a href="{% url 'post-create' %}">게시물 작성</a>
+        </li>
+      </ul>
+    </div>
+
+    {% block content %}
+    {% endblock content %}
+  </body>
+</html>

@@ -1,0 +1,184 @@
+/* 간단한 리셋 CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 기본 바디 스타일 */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+}
+
+/* 페이지 컨테이너 */
+.container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1920px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 수평 가운데 정렬 */
+}
+.navbar {
+  margin: 0 auto;
+  display:flex;
+  width:100%;
+  height:50px;
+  justify-content: space-between;
+}
+.greed {
+  margin-top: 50px;
+  width: 100%;
+  max-width: 1920px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: center;
+}
+
+/* 그리드 시스템 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.column {
+  margin : 16px;
+  flex: 0 0 320px;
+  min-width: 319px; /* 최소 너비를 설정하여 카드가 너무 작아지지 않게 합니다 */
+}
+
+/* 포스트 카드 */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  width: 320px;
+  height: 377px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.card-image {
+  width: 320px;
+  height: 167px;
+}
+
+.card-body {
+  padding: 20px;
+  width: 320px;
+  height: 165px;
+}
+/* 이미지 스타일 */
+.post-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* 텍스트 스타일 */
+.post-title {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+}
+
+.post-meta {
+  color: #666;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* 반응형 미디어 쿼리 */
+@media (min-width: 1920px) {
+  .container {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1920px;
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1920px;
+      display: flex; 
+  }
+}
+
+@media (min-width: 1408px) and (max-width: 1919px) {
+  .container {
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1408px; /* 최대 너비를 설정합니다. */
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1408px;
+      display: flex; 
+  }
+}
+
+@media (min-width: 1056px) and (max-width: 1407px) {
+  .container {
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1056px; /* 최대 너비를 설정합니다. */
+      display: flex;
+      justify-content: center;
+  }
+  .navbar {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1056px;
+      display: flex; 
+  }
+}
+
+@media (min-width: 748px) and (max-width: 1056px) {
+  .navbar {
+  margin: 0 auto;
+      width: 100%;
+      display: flex; 
+  }
+  .column {
+      flex: 0 0 calc(50% - 32px); /* (100% / 2) - padding*2 */
+  }
+  .card {
+      width: 100%;
+  }
+}
+
+@media (max-width: 747px) {
+  .navbar {
+      margin: 0 auto;
+          width: 100%;
+          display: flex; 
+      }
+  .column {
+      flex: 0 0 100%; /* 카드가 전체 너비를 차지하도록 설정 */
+  }
+  .card {
+      width: 100%;
+  }
+}
+
+
+
+
+
+
+<!-- 
+
+<a href="{% url 'posts:comment-create' post.id %}">댓글쓰기</a>
+<a href="{% url 'posts:update' post.id %}">수정하기</a>
+<a href="{% url 'posts:delete' post.id %}">삭제하기</a> -->

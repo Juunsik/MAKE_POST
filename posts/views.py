@@ -31,7 +31,7 @@ def post_create(request):
         form = PostForm(request.POST)
         if form.is_valid():
             new_post = form.save()
-            return redirect("post-detail", post_id=new_post.id)
+            return redirect("posts:detail", post_id=new_post.id)
     else:
         form = PostForm()
     return render(request, "posts/post_form.html", {"form": form})
@@ -44,7 +44,7 @@ def post_update(request, post_id):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
-            return redirect("post-detail", post_id=post.id)
+            return redirect("posts:detail", post_id=post.id)
     else:
         form = PostForm(instance=post)
     return render(request, "posts/post_form.html", {"form": form})
@@ -55,7 +55,7 @@ def page_delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
         post.delete()
-        return redirect("post-list")
+        return redirect("posts:list")
     else:
         return render(request, "posts/post_confirm_delete.html", {"post": post})
 
@@ -64,16 +64,15 @@ def page_delete(request, post_id):
 def comment_create(request, post_id):
     if request.method == "POST":
         form = CommentForm(request.POST)
-        post = Post.objects.get(id=post_id)
+        post = Post.objects.get(id=post_id) # 댓글이 어떤 게시물의 댓글인지 확인
         if not post:
-            return redirect("post-list")
-        print(form)
+            return redirect("posts:list")
         if form.is_valid():
             comment = form.save()
             comment.post = post
             comment.save()
             messages.success(request, "Post reviewed")
-            return redirect("post-detail", post_id=post.id)
+            return redirect("posts:detail", post_id=post.id)
     else:
         form=CommentForm()
     return render(request, "posts/comment_form.html", {"form": form})

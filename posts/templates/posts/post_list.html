@@ -1,0 +1,52 @@
+{% extends './base.html' %}
+
+{% block content %}
+  {% if page %}
+    <div class="wrap-note">
+      <div class="note">
+        <div class="note-list">
+          <ul>
+            {% for post in page %}
+              <li>
+                <a href="{% url 'post-detail' post.id %}">
+                  <div class="date">
+                    <span>{{post.created_at|date:'d'}}</span>
+                    <p>{{post.created_at|date:'M'}}</p>
+                  </div>
+                  <h2>{{post.title}}</h2>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="paging">
+          {% if page.has_previous %}
+            <a href="?page=1" class="first">처음</a>
+            <a href="?page={{page.previous_page_number}}" class="prev">이전</a>
+          {% endif %}
+
+          <span class="page">
+            <p>{{page.number}}
+              of
+              {{page.paginator.num_pages}}</p>
+          </span>
+
+          {% if page.has_next %}
+            <a href="?page={{page.next_page_number}}" class="next">다음</a>
+            <a href="?page={{page.paginator.num_pages}}" class="last">마지막</a>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+  {% else %}
+    <div class="wrap-default">
+      <div class="default">
+        <div class="default-box">
+          <p>"TIL 작성하세요~!!"</p>
+          <a href="{% url 'post-create' %}">게시물 작성</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock content %}

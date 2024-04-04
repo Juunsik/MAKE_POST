@@ -1,0 +1,50 @@
+{% extends './base.html' %}
+
+{% block content %}
+  <div class="wrap-post">
+    <form method="post">{% csrf_token %}
+      <div class="editor">
+      <div>
+
+        <div class="input input-title">
+          {% for field in form.title %}
+            <div class="form-group">
+            <input  placeholder="제목을 입력하세요">
+            </div>
+          {% endfor %}
+
+          {% for error in form.title.errors %}
+            <span>{{error}}</span>
+          {% endfor %}
+        </div>
+        <div class="1">
+        <hr class="styledhr">
+          <br><br>
+        </div>
+        </div>
+          <br><br>
+          {% for field in form.content %}
+            <div class="form-group">
+              <textarea placeholder="당신의 이야기를 입력하세요..."></textarea>
+            </div>
+          {% endfor %}
+          {% for error in form.content.errors %}
+            <span>{{error}}</span>
+          {% endfor %}
+
+          <br><br><br><br><br><br><br><br>
+          <br><br><br><br><br><br><br><br>
+          <br><br><br><br><br><br><br><br>
+        <div class="footer">
+
+            <div class="post-btn">
+              <a href="{% url 'post-list' %}"> 뒤로가기 </a>
+              <input type="submit" value="작성완료">
+
+        </div>
+        </div>
+
+
+    </form>
+  </div>
+{% endblock content %}

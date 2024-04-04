@@ -1,0 +1,30 @@
+{% extends './base.html' %}
+
+{% block content %}
+  <div class="wrap-delete">
+    <div class="delete-box">
+      <div class="login">
+          <form method='post'>{% csrf_token %}
+              <h2> 회원가입</h2><br>
+          <h4> 로그인에 사용할 아이디와 비밀번호, 이메일을 입력하세요
+          </h4>
+          <input type="text" id="username" name="username" placeholder="First name을 입력하세요." ><br><br>
+          <input type="text" id="username" name="username" placeholder="Last name을 입력하세요." ><br><br>
+          <input type="email" id="useremail" name="username" placeholder="이메일을 입력하세요" ><br><br>
+          <input type="password" id="password" name="password" placeholder="PassWord 를 입력하세요."><br><br>
+          <input type="password" id="password" name="password" placeholder="PassWord 확인 입력하세요."><br><br>
+
+      </div>
+
+
+            <ul>
+              <li><input type="submit" value="승인요청"></li>
+              <li>
+                <a href="{% url 'post-detail' post.id %}">닫기</a>
+              </li>
+            </ul>
+          </form>
+    </div>
+  </div>
+
+{% endblock content %}

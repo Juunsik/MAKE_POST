@@ -1,0 +1,35 @@
+{% extends './base.html' %}
+
+<!-- content 블럭 처리 -->
+{% block content %}
+  <div class="wrap-notetext">
+    <div class="notetext">
+      <div class="text-box">
+        <h2>{{post.title}}</h2>
+        <div class="state">
+          <p>감정 상태</p>
+          <span>{{post.feeling}}</span>
+        </div>
+        <div class="date">
+          <span>{{post.dt_created|date:'d'}}</span>
+          <div class="month-year">
+            <p class="month">{{post.dt_created|date:"M"}}</p>
+            <p class="year">{{post.dt_created|date:"Y"}}</p>
+          </div>
+        </div>
+        <div class="detail">{{post.content|linebreaksbr}}</div>
+        <div class="notetext-btn">
+          <ul>
+            <li>
+              <a href="{% url 'post-delete' post.id %}">삭제하기</a>
+            </li>
+            <li>
+              <a href="{% url 'post-update' post.id %}">수정하기</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+<!-- content 블럭 처리 -->

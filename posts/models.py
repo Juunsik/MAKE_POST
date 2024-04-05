@@ -33,7 +33,6 @@ class Post(CommonModel):
 class Comment(CommonModel):
     content = models.TextField()
     post = models.ForeignKey(Post, related_name="comments", on_delete=models.CASCADE)
-    user = models.ForeignKey('users.User', related_name='reviews', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.content}-{self.post}"

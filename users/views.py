@@ -46,7 +46,7 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
 # View를 사용해서 구현하는 방법
 # class LoginView(View):
 #     def get(self, request):
-#         form=forms.LoginForm(initial={'email':'itn@las.com'})
+#         form=forms.LoginForm()
 #         return render(request, 'users/login.html', {'form':form})
 
 #     def post(self, request):
@@ -77,6 +77,7 @@ class SignUpView(mixins.LoggedOutOnlyView, FormView):
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password")
         user = authenticate(self.request, username=email, password=password)
+        print(user)
         if user is not None:
             login(self.request, user)
         return super().form_valid(form)

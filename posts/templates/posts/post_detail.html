@@ -189,10 +189,17 @@
           <a href="{% url 'posts:list' %}">Home</a>
             <div>
                 
-            <a href="{% url 'posts:create' %}">
-                <button class="btn btn-outline-success">글 작성</button>
+                {% if user.is_authenticated %}
+                <a href="{% url 'posts:create' %}">
+            <button class="btn btn-outline-success">글 작성</button>
             </a>
+                <a href="{% url 'users:logout' %}">
+                  <button class="btn btn-outline-success">로그아웃</button>
+                </a>
+                {% else %}
+
             <button id="openModalBtn" class="btn btn-outline-success" type="submit">로그인</button>
+                {% endif %}
         </div>
         </div>
       </nav>
@@ -216,12 +223,17 @@
     </p>
     <div class="written">
         <p class="post-author">{{post.host}}</p>
+        
+        {% if user.is_authenticated %}
         <button>
             <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
           </button>
           <button>
             <a href="{% url 'posts:update' post.id %}">수정하기</a>
           </button>
+            
+        {% endif %}
+            
     </div>
 
 
@@ -230,22 +242,34 @@
         <h3>댓글</h3>
     
         <!-- Django 폼 (위에서 설명한 대로) -->
-        <form method="post" action="{% url 'posts:comment-create' post.id %}">
+        {% comment %} <form action="{% url 'posts:comment-create' post.id %}" method="post">
             {% csrf_token %}
-            
-            {{ form.content }}
- 
-            <input type="submit" value="댓글 작성">
-        </form>
+            {{ comment_form.as_p }}
+        </form> {% endcomment %}
+        
+        <button>
+            <a href="{% url 'posts:comment-create' post_id=post.id %}">
+                댓글 작성{{post.id}}
+            </a>
+        </button>
         
     
         <!-- 댓글 리스트 -->
-        {% for comment in comments %}
-            <div class="comment">
-                <p class="comment-author">{{ comment.author.username }}</p>
-                <p class="comment-text">{{ comment.text }}</p>
-            </div>
-        {% endfor %}
+        {% for comment in post.comments.all %}
+    <p>{{ comment.content }}</p>
+    <!-- 댓글 수정 및 삭제 링크 추가 -->
+        <a href="{% url 'posts:comment-update' comment_id=comment.id %}">수정</a>
+
+        <form action="{% url 'posts:comment-delete' comment_id=comment.id %}">
+            {% csrf_token %}
+            <button>
+                삭제
+            </button>
+        </form>
+        
+{% empty %}
+    <p>댓글이 없습니다.</p>
+{% endfor %}
     </div>
   
 </div>

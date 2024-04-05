@@ -159,7 +159,9 @@
                   <button class="btn btn-outline-success" >로그아웃</button>
                 </a>
                 {% else %}
-
+                <a href="{% url 'users:login' %}">
+                  <button class="btn btn-outline-success" >로그아웃</button>
+                </a>
             <button id="openModalBtn" class="btn btn-outline-success" type="submit">로그인</button>
                 {% endif %}
                   

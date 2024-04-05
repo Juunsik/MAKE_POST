@@ -189,8 +189,8 @@
           <a href="{% url 'posts:list' %}">Home</a>
             <div>
                 
-                <a href="{% url 'posts:create' %}">
-            <button class="btn btn-outline-success">글 작성</button>
+            <a href="{% url 'posts:create' %}">
+                <button class="btn btn-outline-success">글 작성</button>
             </a>
             <button id="openModalBtn" class="btn btn-outline-success" type="submit">로그인</button>
         </div>
@@ -210,10 +210,12 @@
         {% for error in form.content.errors %}
         <span>{{error}}</span>
         {% endfor %}
-        <img src="path-to-your-image.jpg" alt="Descriptive text about the image">
+        <div>
+            <img src="{{post.first_photo}}" alt="Descriptive text about the image">
+        </div>
     </p>
     <div class="written">
-        <p class="post-author">글 작성자 넣는 칸입니다</p>
+        <p class="post-author">{{post.host}}</p>
         <button>
             <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
           </button>
@@ -230,11 +232,10 @@
         <!-- Django 폼 (위에서 설명한 대로) -->
         <form method="post" action="{% url 'posts:comment-create' post.id %}">
             {% csrf_token %}
-            {{ form.as_p }}
             
-    <textarea class="comment-input" placeholder="댓글을 입력하세요...">
-    </textarea>
-    <input type="submit" value="댓글 작성">
+            {{ form.content }}
+ 
+            <input type="submit" value="댓글 작성">
         </form>
         
     

@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib import messages
 from users import mixins as user_mixins
 from . import models, forms
+from users.models import User
 
 # Create your views here.
 
@@ -45,10 +46,12 @@ def post_create(request):
         form = forms.PostForm(request.POST)
         if form.is_valid():
             new_post = form.save()
+            new_post.host_id=request.user.pk
+            new_post.save()
             return redirect("posts:detail", post_id=new_post.id)
     else:
         form = forms.PostForm()
-    return render(request, "posts/post_create.html", {"form": form})
+    return render(request, "posts/post_form.html", {"form": form})
 
 
 # 게시물 수정
@@ -57,12 +60,15 @@ def post_update(request, post_id):
     post = get_object_or_404(models.Post, id=post_id)
     if request.method == "POST":
         form = forms.PostForm(request.POST, instance=post)
+        user=request.user
         if form.is_valid():
+            form=form.save()
+            form.host.pk=user.pk
             form.save()
             return redirect("posts:detail", post_id=post.id)
     else:
         form = forms.PostForm(instance=post)
-    return render(request, "posts/post_create.html", {"form": form})
+    return render(request, "posts/post_form.html", {"form": form})
 
 
 # 게시물 삭제
@@ -77,21 +83,32 @@ def page_delete(request, post_id):
 
 
 # 댓글 생성
+@login_required
 def comment_create(request, post_id):
+    post = models.Post.objects.get(id=post_id) # 댓글이 어떤 게시물의 댓글인지 확인
     if request.method == "POST":
         form = forms.CommentForm(request.POST)
-        post = models.Post.objects.get(id=post_id) # 댓글이 어떤 게시물의 댓글인지 확인
+        print(form)
         if not post:
             return redirect("posts:list")
         if form.is_valid():
             comment = form.save()
-            comment.post = post
+            print(comment.post_id, comment.user_pk)
             comment.save()
             messages.success(request, "Post reviewed")
-            return redirect("posts:detail", post_id=post.id)
+        return redirect("posts:detail", post_id=post.id)
     else:
-        form=forms.CommentForm()
-    return render(request, "posts/comment_form.html", {"form": form})
+        form=forms.CommentForm(user=request.user)
+    return render(request, "posts/comment_create.html", {"form": form})
+
+# 댓글 수정    
+# @login_required
+# def comment_update(request, post_id, comment_id):
+#     post = get_object_or_404(models.Post, id=post_id)
+#     user = request.user
+    
+#     form=forms.CommentForm(request.POST)
+
 
 
 # 이미지

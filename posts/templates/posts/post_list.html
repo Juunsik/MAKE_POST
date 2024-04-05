@@ -1,9 +1,10 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>4조 게시물</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
 
@@ -27,6 +28,7 @@
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
     max-width: 500px; /* Maximum width */
+    justify-content: center;
 }
 
 /* The Close Button */
@@ -70,11 +72,14 @@
 }
 
 .card:hover {
-  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 15px #12B886;
 }
 .card-img-top {
     width: 320px;
     height: 150px;
+    background-color: grey;
+
+
 }
 @media (min-width: 1920px) {
   #post-container {
@@ -140,17 +145,41 @@
   .card-img-top {
     width: 100%;
     height: calc(46vw);
+
 }
 }
+.modal-head{
+    color: darkgreen;
+    justify-content: center;
+
+        }
+.modal-footer{
+    display: flex;
+    justify-content: center;
+}
+.modal-footer button{
+    width: 100px;
+    height: 40px;
+    background-color: #12B886;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+        }
+.formcontents {
+    text-align: right;
+
+}
+
     </style>
 
   </head>
   <body>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
-          <a href="{% url 'posts:list' %}">Home</a>
+          <a href="{% url 'posts:list' %}"><img src="{% static 'posts/image/logo01.jpg' %}" width="150" height="150"></a>
             <div>
-                {{ user.is_authenticated }}
                 {% if user.is_authenticated %}
                 <a href="{% url 'posts:create' %}">
             <button class="btn btn-outline-success">글 작성</button>
@@ -160,21 +189,20 @@
                 </a>
                 {% else %}
                 <a href="{% url 'users:login' %}">
-                  <button class="btn btn-outline-success" >로그아웃</button>
+                  <button class="btn btn-outline-success" >로그인</button>
                 </a>
-            <button id="openModalBtn" class="btn btn-outline-success" type="submit">로그인</button>
                 {% endif %}
                   
-        </div>
-        </div>
-      </nav>
-      <nav class="navbar bg-body-tertiary">
+              </div>
+            </div>
+          </nav>
+          <nav class="navbar bg-body-tertiary">
         <form class="container-fluid justify-content-start">
           <a href="{% url 'posts:list' %}">
             <button class="btn btn-outline-success me-2" type="button">최신순</button>
           </a>
           <a href="{% url 'posts:hits' %}">
-            <button class="btn btn-outline-success me-2" type="button">추천순</button>
+            <button class="btn btn-outline-success me-2" type="button">조회순</button>
           </a>
         </form>
       </nav>
@@ -186,22 +214,28 @@
         <a href="{% url 'posts:detail' post.id %}">
             <div class="card-image">
               <!-- 실제 이미지 경로로 src 속성을 변경해야 합니다 -->
+              
+              {% if post.first_photo %}
               <img src="{{ post.first_photo }}" class="card-img-top" alt="{{ post.title }}">
+              {% else %}
+              <img src="{{ post.image_url }}" class="card-img-top">
+              {% endif %}
+                
             </div>
             <div class="card-body">
-              <div style="width: 100%; height: 40px;">
-              <h5 class="card-title">{{ post.title }}</h5>
+              <div style="width: 100%; height: 40px; font-weight: Bold; font-size: 17px; color: darkgreen; ">
+              <h5 class="card-title">게시물 제목 : {{ post.title }}</h5>
             </div>
-            <div style="width:100%; height: 30px;"> 
-              <p class="card-text">{{ post.content }}</p>
+            <div style="background-color: azure; width:100%; height: 40px;"> 
+              <p class="card-text">content: {{ post.content }}</p>
             </div>
-            <div style="width:100%; height: 30px;">
-              <p class="post-date">{{ post.created_at|date:'d' }} {{ post.created_at|date:'M' }}</p>
-              <p class="count-comment">{{ post.comment_count }} comments</p>
+            <div style="width:100%; height: 40px;">
+              <p class="post-date">생성일 : {{ post.created_at|date:'d' }} {{ post.created_at|date:'M' }}</p>
+              <p class="count-comment">조회수 : {{ post.read_count }}</p>
             </div>
-            <div style="width: 100%; height: 50px;" class="card-user">
+            <div style="width: 100%; height: 40px;" class="card-user">
               <img src="{{ post.user.profile_image_url }}" class="" alt="{{ post.user.username }}">
-              <p class="username">username{{ post.user.username }}</p>
+              <p class="username">ID : {{ post.host.username }}</p>
             </div>
           </div>
         </div>
@@ -216,72 +250,60 @@
 
 
     <div id="loading" style="display: none;">
-        <p>로딩 중...</p>
-    </div>
+      <p>로딩 중...</p>
+  </div>
 
-      <div id="modal" class="modal">
-        <div class="modal-content">
-            
-            <h2>로그인</h2>
-            <form>
-                <div>
-                    <input type="email" placeholder="Email">
-                </div>
-                <div>
-                    <input type="password" placeholder="Password">
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            <span class="close-button">닫기</span>
-            <span>
-                <button id="createid_">회원가입</button></span>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+          <div class="modal-head">
+          <h2>로그인</h2>
+          </div>
+          <form>
+              <div>
+                  <input type="email" placeholder="Email"><br>
+              </div>
+              <div>
+                  <input type="password" placeholder="Password"><br>
+              </div>
+              <div class="formcontents">
+              <button type="submit" style="height: 100px; width:100px ;" >Login</button>
+                  </div>
+          </form>
+          <div class = modal-footer>
+            <button class="close-button">닫기</button>
+            <button id="createid_">회원가입</button>
+            </div>
         </div>
     </div>
     <div id="createid" class="modal">
-        <div class="modal-content">
-            <h2>회원가입</h2>
-            <form>
-                <div>성
-                    <input type="text">
-                </div>
-                <div>이름
-                    <input type="text">
-                </div>
-                
-                <div>이메일
-                    <input type="email" placeholder="Email">
-                </div>
-                <div>비밀번호
-                    <input type="password" placeholder="Password">
-                </div>
-                <div>비밀번호 재입력
-                    <input type="password" placeholder="Password">
-                </div>
-                <button type="submit">확인</button>
-            </form>
-            <span class="close-button">닫기</span>
-            <span>
-        </div>
-    </div>
-    <div class="paging">
-      {% if page.has_previous %}
-        <a href="?page=1" class="first">처음</a>
-        <a href="?page={{page.previous_page_number}}" class="prev">이전</a>
-      {% endif %}
+      <div class="modal-content">
+          <div class="modal-head">
+          <h2>회원가입</h2><div>
+          <form>
+              <div>
+                  <input type="text" placeholder="First name">
+              </div>
+              <div>
+                  <input type="text" placeholder="Last name">
+              </div>
+              <div>
+                  <input type="email" placeholder="Email">
+              </div>
+              <div>
+                  <input type="password" placeholder="Password">
+              </div>
+              <div>
+                  <input type="password" placeholder="Password">
+              </div>
+               </form>
+              <div class = modal-footer>
+              <button type="submit">확인</button>
+              <button class="close-button">닫기</button>
 
-      <span class="page">
-        <p>{{page.number}}
-          of
-          {{page.paginator.num_pages}}</p>
-      </span>
-
-      {% if page.has_next %}
-        <a href="?page={{page.next_page_number}}" class="next">다음</a>
-        <a href="?page={{page.paginator.num_pages}}" class="last">마지막</a>
-      {% endif %}
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      </div>
+      </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         // 모달 열고 닫는 함수 정의
         function showModal(modalId) {
@@ -334,26 +356,30 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
       let isLoading = false;
-      let nextPage = {% if page.has_next %}"?page={{page.next_page_number}}"{% else %}null{% endif %};
-  
+      let nextPage = {% if page.has_next %} {{ page.next_page_number }} {%else%} null {%endif%} ;
+      console.log(nextPage);
+      let nextPageurl = "?page="
       function loadMorePosts() {
           if (isLoading || !nextPage) return;
           isLoading = true;
           document.getElementById('loading').style.display = 'block';
   
-          fetch(nextPage)
+          fetch(nextPageurl+nextPage)
               .then(response => response.text())
               .then(html => {
+                  console.log(nextPageurl+nextPage);
                   document.getElementById('loading').style.display = 'none';
                   const parser = new DOMParser();
                   const doc = parser.parseFromString(html, 'text/html');
-                  const newPosts = doc.querySelectorAll('.note-list ul li');
+                  console.log(doc);
+                  const newPosts = doc.querySelectorAll('.row .column'); 
+                  console.log(newPosts);
                   if (newPosts.length === 0) {
                       nextPage = null;
                   } else {
-                      newPosts.forEach(post => document.getElementById('post-list').appendChild(post));
-                      const nextPageLink = doc.querySelector('.paging .next');
-                      nextPage = nextPageLink ? nextPageLink.href : null;
+                      newPosts.forEach(post => document.querySelector('.row').appendChild(post));
+                      nextPage++;
+                      console.log(nextPage);
                   }
                   isLoading = false;
               })

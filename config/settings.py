@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -33,6 +32,7 @@ ALLOWED_HOSTS = []
 CUSTOM_APPS = [
     "common.apps.CommonConfig",
     "posts.apps.PostsConfig",
+    "users.apps.UsersConfig",
 ]
 
 SYSTEM_APPS = [
@@ -61,6 +61,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        # "DIRS": [BASE_DIR / "templates"],
         "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -112,19 +113,30 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS=[BASE_DIR / 'posts/static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Custom
+AUTH_USER_MODEL = "users.User"
+
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL='/media/'
+
+LOGIN_URL='/users/login/'

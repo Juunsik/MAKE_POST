@@ -1,0 +1,8 @@
+<div class="w-1/4 mb-10 px-2 overflow-hidden">
+    <a href="{% url 'posts:detail' post.pk %}">
+        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image:{% if post.first_photo%} url({{post.first_photo}}) {% endif %}"></div>
+        <div class="flex justify-between mb-2 truncate">
+        </div>
+        <span class="text-black truncate w-11/12 block">{{post.title}}</span>
+    </a>
+</div>

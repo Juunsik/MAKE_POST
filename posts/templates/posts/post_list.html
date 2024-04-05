@@ -1,0 +1,401 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>4조 게시물</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+
+        .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(255, 255, 255, 0.8); /* White background with opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 500px; /* Maximum width */
+    justify-content: center;
+}
+
+/* The Close Button */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.column {
+  margin : 16px;
+  flex: 0 0 320px;
+  min-width: 319px; /* 최소 너비를 설정하여 카드가 너무 작아지지 않게 합니다 */
+}
+
+/* 포스트 카드 */
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  width: 320px;
+  height: 377px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 2px 15px #12B886;
+}
+.card-img-top {
+    width: 320px;
+    height: 150px;
+    background-color: grey;
+
+
+}
+@media (min-width: 1920px) {
+  #post-container {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1920px;
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+}
+
+@media (min-width: 1408px) and (max-width: 1919px) {
+    #post-container {
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1408px; /* 최대 너비를 설정합니다. */
+      display: flex; /* Flexbox 사용 */
+      justify-content: center; /* 수평 가운데 정렬 */
+  }
+  .navbar {
+    margin: auto;
+    max-width: 1408px;
+}
+}
+
+
+@media (min-width: 1072px) and (max-width: 1407px) {
+    #post-container{
+      margin: 0 auto;
+      width: 100%; /* 컨테이너의 너비를 전체 사용 가능한 너비로 설정합니다. */
+      max-width: 1072px; /* 최대 너비를 설정합니다. */
+      display: flex;
+      justify-content: center;
+  }
+  .navbar {
+    margin: auto;
+    max-width: 1072px;
+}
+  }
+
+@media (min-width: 748px) and (max-width: 1072px) {
+  .column {
+      flex: 0 0 calc(50% - 32px); /* (100% / 2) - padding*2 */
+  }
+  .card {
+    width: 100%;
+    height: calc(23vw + 227px);
+  }
+  .card-img-top {
+    width: 100%;
+    height: calc(23vw);
+}
+}
+
+@media (max-width: 747px) {
+  .column {
+      flex: 0 0 100%; /* 카드가 전체 너비를 차지하도록 설정 */
+  }
+  .card {
+    width: 100%;
+    height: calc(46vw + 227px);
+  }
+  .card-img-top {
+    width: 100%;
+    height: calc(46vw);
+
+}
+}
+.modal-head{
+    color: darkgreen;
+    justify-content: center;
+
+        }
+.modal-footer{
+    display: flex;
+    justify-content: center;
+}
+.modal-footer button{
+    width: 100px;
+    height: 40px;
+    background-color: #12B886;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+        }
+.formcontents {
+    text-align: right;
+
+}
+
+    </style>
+
+  </head>
+  <body>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a href="{% url 'posts:list' %}"><img src="{% static 'posts/image/logo01.jpg' %}" width="150" height="150"></a>
+            <div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'posts:create' %}">
+            <button class="btn btn-outline-success">글 작성</button>
+            </a>
+                <a href="{% url 'users:logout' %}">
+                  <button class="btn btn-outline-success" >로그아웃</button>
+                </a>
+                {% else %}
+                <a href="{% url 'users:login' %}">
+                  <button class="btn btn-outline-success" >로그인</button>
+                </a>
+                {% endif %}
+                  
+              </div>
+            </div>
+          </nav>
+          <nav class="navbar bg-body-tertiary">
+        <form class="container-fluid justify-content-start">
+          <a href="{% url 'posts:list' %}">
+            <button class="btn btn-outline-success me-2" type="button">최신순</button>
+          </a>
+          <a href="{% url 'posts:hits' %}">
+            <button class="btn btn-outline-success me-2" type="button">조회순</button>
+          </a>
+        </form>
+      </nav>
+    <div id="post-container">
+      <div class="row">
+        {% for post in page %}
+      <div class="column">
+      <div class="card">
+        <a href="{% url 'posts:detail' post.id %}">
+            <div class="card-image">
+              <!-- 실제 이미지 경로로 src 속성을 변경해야 합니다 -->
+              
+              {% if post.first_photo %}
+              <img src="{{ post.first_photo }}" class="card-img-top" alt="{{ post.title }}">
+              {% else %}
+              <img src="{{ post.image_url }}" class="card-img-top">
+              {% endif %}
+                
+            </div>
+            <div class="card-body">
+              <div style="width: 100%; height: 40px; font-weight: Bold; font-size: 17px; color: darkgreen; ">
+              <h5 class="card-title">게시물 제목 : {{ post.title }}</h5>
+            </div>
+            <div style="background-color: azure; width:100%; height: 40px;"> 
+              <p class="card-text">content: {{ post.content }}</p>
+            </div>
+            <div style="width:100%; height: 40px;">
+              <p class="post-date">생성일 : {{ post.created_at|date:'d' }} {{ post.created_at|date:'M' }}</p>
+              <p class="count-comment">조회수 : {{ post.read_count }}</p>
+            </div>
+            <div style="width: 100%; height: 40px;" class="card-user">
+              <img src="{{ post.user.profile_image_url }}" class="" alt="{{ post.user.username }}">
+              <p class="username">ID : {{ post.host.username }}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+      </div>
+    {% endfor %}
+    </div>
+
+
+    </div>
+    </div>
+
+
+    <div id="loading" style="display: none;">
+      <p>로딩 중...</p>
+  </div>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+          <div class="modal-head">
+          <h2>로그인</h2>
+          </div>
+          <form>
+              <div>
+                  <input type="email" placeholder="Email"><br>
+              </div>
+              <div>
+                  <input type="password" placeholder="Password"><br>
+              </div>
+              <div class="formcontents">
+              <button type="submit" style="height: 100px; width:100px ;" >Login</button>
+                  </div>
+          </form>
+          <div class = modal-footer>
+            <button class="close-button">닫기</button>
+            <button id="createid_">회원가입</button>
+            </div>
+        </div>
+    </div>
+    <div id="createid" class="modal">
+      <div class="modal-content">
+          <div class="modal-head">
+          <h2>회원가입</h2><div>
+          <form>
+              <div>
+                  <input type="text" placeholder="First name">
+              </div>
+              <div>
+                  <input type="text" placeholder="Last name">
+              </div>
+              <div>
+                  <input type="email" placeholder="Email">
+              </div>
+              <div>
+                  <input type="password" placeholder="Password">
+              </div>
+              <div>
+                  <input type="password" placeholder="Password">
+              </div>
+               </form>
+              <div class = modal-footer>
+              <button type="submit">확인</button>
+              <button class="close-button">닫기</button>
+
+      </div>
+      </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // 모달 열고 닫는 함수 정의
+        function showModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "block";
+        }
+    
+        function hideModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+    
+        var loginModal = document.getElementById("modal");
+        var signupModal = document.getElementById("createid");
+        var openModalBtn = document.getElementById("openModalBtn");
+        var signupBtn = document.getElementById("createid_");
+        var closeButtons = document.getElementsByClassName("close-button");
+    
+        // 로그인 모달 열기
+        openModalBtn.addEventListener("click", function(event) {
+            event.preventDefault(); // 폼 제출 방지
+            showModal("modal");
+        });
+    
+        // 회원가입 버튼 클릭 시 이벤트
+        signupBtn.addEventListener("click", function(event) {
+            event.preventDefault(); // 폼 제출 방지
+            hideModal("modal"); // 로그인 모달 닫기
+            showModal("createid"); // 회원가입 모달 열기
+        });
+    
+        // 모든 닫기 버튼에 대해 이벤트 리스너 추가
+        for (var i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].onclick = function() {
+                hideModal("modal");
+                hideModal("createid");
+            }
+        }
+    
+        // 모달 외부 클릭 시 모달 닫기
+        window.onclick = function(event) {
+            if (event.target == loginModal) {
+                hideModal("modal");
+            }
+            if (event.target == signupModal) {
+                hideModal("createid");
+            }
+        }
+    </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      let isLoading = false;
+      let nextPage = {% if page.has_next %} {{ page.next_page_number }} {%else%} null {%endif%} ;
+      console.log(nextPage);
+      let nextPageurl = "?page="
+      function loadMorePosts() {
+          if (isLoading || !nextPage) return;
+          isLoading = true;
+          document.getElementById('loading').style.display = 'block';
+  
+          fetch(nextPageurl+nextPage)
+              .then(response => response.text())
+              .then(html => {
+                  console.log(nextPageurl+nextPage);
+                  document.getElementById('loading').style.display = 'none';
+                  const parser = new DOMParser();
+                  const doc = parser.parseFromString(html, 'text/html');
+                  console.log(doc);
+                  const newPosts = doc.querySelectorAll('.row .column'); 
+                  console.log(newPosts);
+                  if (newPosts.length === 0) {
+                      nextPage = null;
+                  } else {
+                      newPosts.forEach(post => document.querySelector('.row').appendChild(post));
+                      nextPage++;
+                      console.log(nextPage);
+                  }
+                  isLoading = false;
+              })
+              .catch(error => {
+                  console.error('Error loading more posts:', error);
+                  isLoading = false;
+              });
+      }
+  
+      window.addEventListener('scroll', () => {
+          if (window.innerHeight + window.scrollY >= document.body.offsetHeight && !isLoading) {
+              loadMorePosts();
+          }
+      });
+  });
+  </script>
+
+</body>
+</html>
